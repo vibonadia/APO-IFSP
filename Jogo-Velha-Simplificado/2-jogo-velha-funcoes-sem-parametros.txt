@@ -1,0 +1,149 @@
+
+const JOGADOR1 "O"
+const JOGADOR2 "X"
+
+// declaração da matriz	(matriz passa a ser global)
+tipo M = matriz[0..3, 0..3] de caracteres;
+M: tabuleiro;
+
+inicio
+
+	inteiro: jogadas <- 0;
+	lógico: jog1_venceu, jog2_venceu;
+	jog1_venceu <- falso;  
+	jog2_venceu <- falso;
+	
+	incializa_matriz;
+	
+	// inicio do jogo
+	enquanto jogadas < 9 faça:
+
+		imprime_matriz;
+
+		le_jogada_jogador_1;
+		
+		// atualiza quantidade de jogadas
+		jogadas <- jogadas + 1;
+		
+		jog1_venceu <- verifica_jogador1;
+		
+		// finaliza o jogo se o jogar 1 venceu
+		se jog1_venceu = verdadeiro então:
+			escreva("O jogador 2 venceu!");
+			break;
+		fimse;
+
+		imprime_matriz;	
+		
+		le_jogada_jogador2;
+		
+		// atualiza quantidade de jogadas
+		jogadas <- jogadas + 1;
+				
+		jog2_venceu <- verifica_jogador2;
+		
+		// finaliza o jogo se o jogar 2 venceu
+		se jog2_venceu = verdadeiro então:
+			escreva("O jogador 2 venceu!");
+			break;
+		fimse
+	fimenquanto.
+fim.
+
+módulo incializa_matriz
+	inteiro: lin, col;
+	// inicializa todas as posições da matriz com um traço "-"
+	para lin de 0 até 3 passo 1 faça:
+		para col de 0 até 3 passo 1 faça:
+			tabuleiro[lin, col] <- "-";
+		fimpara.
+	fimpara.	
+fimmódulo;
+
+módulo imprime_matriz
+	inteiro: lin, col;
+	// imprime a matriz (tabuleiro)
+	para lin de 0 até 2 passo 1 faça:
+		para col de 0 até 2 passo 1 faça:
+			escreva(tabuleiro[lin, col]);
+		fimpara.
+	fimpara.
+fim_módulo;
+
+módulo le_jogada_jogador_1
+	inteiro: pos_lin, pos_col;
+	
+	// Lê as coordenadas do jogador 1
+	escreva("Vez do jogador 1");
+	leia(pos_lin, pos_col);
+	
+	// Caso o jogador informe uma coordenada inválida 
+	// pede para ele informar novamente
+	enquanto (tabuleiro[pos_lin, pos_col] != "-") OU (pos_lin > 2) OU (pos_col >2) faça:
+		escreva("Vez do jogador 1");
+		leia(pos_lin, pos_col);
+	fimenquanto.
+
+	// atualiza o tabuleiro com a jogada do jogador 1
+	tabuleiro[pos_lin, pos_col] <- JOGADOR1;
+fimmódulo;
+
+módulo verifica_jogador1
+	inteiro: lin, col, cont;
+	Lógico: jog1_venceu <- falso;
+	
+	//verifica se jogador 1 ganhou
+	// verifica as linhas da matriz
+	para lin de 0 até 2 passo 1 faça:
+		cont <- 0;
+		para col de 0 até 2 passo 1 faça:
+			se (tabuleiro[lin, col] = JOGADOR1) então:
+				cont <- cont + 1;
+			fimse;
+		fimpara;
+		se cont = 3 então:
+			jog1_venceu <- verdadeiro;
+		fimse;
+	fimpara;
+	
+	retorna(jog1_venceu);
+fimmódulo;
+
+módulo le_jogada_jogador2
+	inteito: pos_lin, pos_col;
+
+	// Lê as coordenadas do jogador 2
+	escreva("Vez do jogador 2");
+	leia(pos_lin, pos_col);
+	
+	// Caso o jogador informe uma coordenada inválida 
+	// pede para ele informar novamente
+	enquanto (tabuleiro[pos_lin, pos_col] != "-") OU (pos_lin > 2) OU (pos_col >2) faça:
+		escreva("Vez do jogador 2");
+		leia(pos_lin, pos_col);
+	fimenquanto;
+
+	// atualiza o tabuleiro com a jogada do jogador 2
+	tabuleiro[pos_lin, pos_col] <- JOGADOR2;
+fimmódulo;
+
+módulo verifica_jogador2
+	inteiro: lin, col;
+	Lógico: jog2_venceu <- falso;
+	
+	// verifica se jogador 2 ganhou
+	// verifica as linhas da matriz
+	para lin de 0 até 2 passo 1 faça:
+		cont <- 0;
+		para col de 0 até 2 passo 1 faça:
+			se (tabuleiro[lin, col] = JOGADOR2) então:
+				cont <- cont + 1;
+			fimse;
+		fimpara;
+		se cont = 3 então:
+			jog2_venceu <- verdadeiro;
+		fimse;
+	fimpara;
+
+	retorna (jog2_venceu);
+fimmódulo;
